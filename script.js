@@ -16,6 +16,13 @@ function saveTransactions() {
   );
 }
 
+function formatMoney(amount) {
+  return `₦${amount.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })}`;
+}
+
 function addTransactionDOM(transaction) {
   const sign = transaction.amount < 0 ? "minus" : "plus";
 
@@ -26,7 +33,7 @@ function addTransactionDOM(transaction) {
     ${transaction.text}
     <span>
       ${transaction.amount < 0 ? "-" : "+"}
-      ₦${Math.abs(transaction.amount).toFixed(2)}
+      ${formatMoney(Math.abs(transaction.amount))}
     </span>
     <button class="delete-btn" onclick="removeTransaction(${transaction.id})">
       X
@@ -54,9 +61,9 @@ function updateValues() {
       .reduce((acc, item) => acc + item, 0) * -1
   ).toFixed(2);
 
-  balance.innerText = `₦${total}`;
-  income.innerText = `+₦${incomeTotal}`;
-  expense.innerText = `-₦${expenseTotal}`;
+  balance.innerText = formatMoney(Number(total));
+  income.innerText = formatMoney(Number(incomeTotal));
+  expense.innerText = formatMoney(Number(expenseTotal));
 }
 
 function removeTransaction(id) {
